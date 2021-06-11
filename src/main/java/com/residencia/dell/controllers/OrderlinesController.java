@@ -24,18 +24,7 @@ public class OrderlinesController {
         return new ResponseEntity<>(orderlinesService.findById(orderlineId, orderId), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Orderlines>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(orderlinesService.findAll(pagina,
-                qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-orderlines")
     public ResponseEntity<List<OrderlinesVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -52,13 +41,14 @@ public class OrderlinesController {
     }
 
     @PostMapping
-    public ResponseEntity<Orderlines> save(@RequestBody Orderlines orderline) {
+    public ResponseEntity<OrderlinesVO> save(@RequestBody OrderlinesVO orderlinesVO) {
         HttpHeaders headers = new HttpHeaders();
-        Orderlines orderlines = orderlinesService.save(orderline);
-        if (null != orderlines)
-            return ResponseEntity.ok().body(orderlines);
+
+        OrderlinesVO novaOrderlinesVO = orderlinesService.saveVO(orderlinesVO);
+        if (null != novaOrderlinesVO)
+            return ResponseEntity.ok().body(novaOrderlinesVO);
         else
-            return new ResponseEntity<>(orderlinesService.save(orderlines), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(orderlinesService.saveVO(novaOrderlinesVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{orderlineId}/{orderId}")
@@ -76,4 +66,15 @@ public class OrderlinesController {
         }
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Orderlines>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(orderlinesService.findAll(pagina,
+//                qtdRegistros), headers, HttpStatus.OK);
+//    }
 }

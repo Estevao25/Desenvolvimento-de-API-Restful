@@ -24,18 +24,7 @@ public class InventoryController {
         return new ResponseEntity<>(inventoryService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Inventory>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(inventoryService.findAll(pagina,
-                qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-inventory")
     public ResponseEntity<List<InventoryVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -52,13 +41,14 @@ public class InventoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Inventory> save(@RequestBody Inventory inventory) {
+    public ResponseEntity<InventoryVO> save(@RequestBody InventoryVO inventoryVO) {
         HttpHeaders headers = new HttpHeaders();
-        Inventory inventory1 = inventoryService.save(inventory);
-        if (null != inventory)
-            return ResponseEntity.ok().body(inventory1);
+
+        InventoryVO novoInventoryVO = inventoryService.saveVO(inventoryVO);
+        if (null != novoInventoryVO)
+            return ResponseEntity.ok().body(novoInventoryVO);
         else
-            return new ResponseEntity<>(inventoryService.save(inventory1), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(inventoryService.saveVO(novoInventoryVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
@@ -76,4 +66,15 @@ public class InventoryController {
         }
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Inventory>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(inventoryService.findAll(pagina,
+//                qtdRegistros), headers, HttpStatus.OK);
+//    }
 }

@@ -8,15 +8,26 @@ import java.util.Calendar;
 @Entity
 @Table(name = "reorder")
 public class Reorder {
-    private Calendar dateLow;
-    private Integer quanLow;
-    private Calendar dateReordered;
-    private Integer quanReordered;
-    private Calendar dateExpected;
 
     @Id
     @Column(name = "prod_id")
     private Integer prodId;
+
+    @Column(name = "date_low")
+    private Calendar dateLow;
+
+    @Column(name = "quan_low")
+    private Integer quanLow;
+
+    @Column(name = "date_reordered")
+    private Calendar dateReordered;
+
+    @Column(name = "quan_reordered")
+    private Integer quanReordered;
+
+    @Column(name = "date_expected")
+    private Calendar dateExpected;
+
     public Integer getProdId() {
         return prodId;
     }
@@ -25,7 +36,6 @@ public class Reorder {
         this.prodId = prodId;
     }
 
-    @Column(name = "date_low")
     public Calendar getDateLow() {
         return dateLow;
     }
@@ -34,7 +44,6 @@ public class Reorder {
         this.dateLow = dateLow;
     }
 
-    @Column(name = "quan_low")
     public Integer getQuanLow() {
         return quanLow;
     }
@@ -43,7 +52,6 @@ public class Reorder {
         this.quanLow = quanLow;
     }
 
-    @Column(name = "date_reordered")
     public Calendar getDateReordered() {
         return dateReordered;
     }
@@ -52,7 +60,6 @@ public class Reorder {
         this.dateReordered = dateReordered;
     }
 
-    @Column(name = "quan_reordered")
     public Integer getQuanReordered() {
         return quanReordered;
     }
@@ -61,7 +68,6 @@ public class Reorder {
         this.quanReordered = quanReordered;
     }
 
-    @Column(name = "date_expected")
     public Calendar getDateExpected() {
         return dateExpected;
     }

@@ -8,12 +8,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "inventory")
 public class Inventory {
-    private Integer prodId;
-    private Integer quanInStock;
-    private Integer sales;
 
     @Id
     @Column(name = "prod_id")
+    private Integer prodId;
+
+    @Column(name = "quan_in_stock")
+    private Integer quanInStock;
+
+    @Column(name = "sales")
+    private Integer sales;
+
     public Integer getProdId() {
         return prodId;
     }
@@ -22,8 +27,6 @@ public class Inventory {
         this.prodId = prodId;
     }
 
-
-    @Column(name = "quan_in_stock")
     public Integer getQuanInStock() {
         return quanInStock;
     }
@@ -32,8 +35,6 @@ public class Inventory {
         this.quanInStock = quanInStock;
     }
 
-
-    @Column(name = "sales")
     public Integer getSales() {
         return sales;
     }

@@ -1,7 +1,6 @@
 package com.residencia.dell.services;
 
 import com.residencia.dell.entities.Categories;
-import com.residencia.dell.entities.Orders;
 import com.residencia.dell.repositories.CategoriesRepository;
 import com.residencia.dell.vo.CategoriesVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,33 +22,8 @@ public class CategoriesService {
         return categoriesRepository.findById(id).get();
     }
 
-    public List<Categories> findAll(){
-        return categoriesRepository.findAll();
-    }
-
-    public List<Categories> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
-        Pageable page = null;
-        List<Categories> listCategories = null;
-        List<Categories> listCategoriesComPaginacao = null;
-
-        try {
-            if (null != pagina && null != qtdRegistros) {
-                page = PageRequest.of(pagina, qtdRegistros);
-                listCategoriesComPaginacao = categoriesRepository.findAll(page).getContent();
-
-                return listCategoriesComPaginacao;
-            } else {
-                listCategories = categoriesRepository.findAll();
-
-                return listCategories;
-            }
-        } catch (Exception e) {
-            throw new Exception("Não foi possível recuperar a lista de categorias ::" + e.getMessage());
-        }
-    }
-
     public List<CategoriesVO> findAllVO(Integer pagina, Integer qtdRegistros) throws Exception {
-        PageRequest page = null;
+        Pageable page = null;
         List<Categories> listCategories = null;
         List<Categories> listCategoriesComPaginacao = null;
         List<CategoriesVO> listCategoriesVO = new ArrayList<>();
@@ -79,30 +53,15 @@ public class CategoriesService {
         return listCategoriesVO;
     }
 
-    private CategoriesVO convertEntidadeParaVO(Categories categories) {
-        CategoriesVO categoriesVO = new CategoriesVO();
-
-        categoriesVO.setCategory(categories.getCategory());
-        categoriesVO.setCategoryName(categories.getCategoryname());
-
-        return categoriesVO;
-    }
-
     public long count(){
         return categoriesRepository.count();
     }
 
-    public Categories save(Categories categories){
-        if(categoriesRepository.save(categories).getCategory() != null){
-            return categoriesRepository.save(categories);
-        } else{
-            return null;
-        }
+    public CategoriesVO saveVO(CategoriesVO categoriesVO){
+        Categories novaCategory = convertVOParaEntidade(categoriesVO);
+        categoriesRepository.save(novaCategory);
+        return convertEntidadeParaVO(novaCategory);
     }
-
-//    public Categories update(Categories categories){
-//        return categoriesRepository.save(categories);
-//    }
 
     public Categories update(Integer id, Categories categories) {
         Categories newCategories = categoriesRepository.findById(id).get();
@@ -122,4 +81,47 @@ public class CategoriesService {
             return false;
         }
     }
+
+    private CategoriesVO convertEntidadeParaVO(Categories categories) {
+        CategoriesVO categoriesVO = new CategoriesVO();
+
+        categoriesVO.setCategory(categories.getCategory());
+        categoriesVO.setCategoryName(categories.getCategoryname());
+
+        return categoriesVO;
+    }
+
+    private Categories convertVOParaEntidade(CategoriesVO categoriesVO) {
+        Categories categories = new Categories();
+
+        categories.setCategory(categoriesVO.getCategory());
+        categories.setCategoryname(categoriesVO.getCategoryName());
+
+        return categories;
+    }
+
+//    public List<Categories> findAll(){
+//        return categoriesRepository.findAll();
+//    }
+//
+//    public List<Categories> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
+//        Pageable page = null;
+//        List<Categories> listCategories = null;
+//        List<Categories> listCategoriesComPaginacao = null;
+//
+//        try {
+//            if (null != pagina && null != qtdRegistros) {
+//                page = PageRequest.of(pagina, qtdRegistros);
+//                listCategoriesComPaginacao = categoriesRepository.findAll(page).getContent();
+//
+//                return listCategoriesComPaginacao;
+//            } else {
+//                listCategories = categoriesRepository.findAll();
+//
+//                return listCategories;
+//            }
+//        } catch (Exception e) {
+//            throw new Exception("Não foi possível recuperar a lista de categorias ::" + e.getMessage());
+//        }
+//    }
 }

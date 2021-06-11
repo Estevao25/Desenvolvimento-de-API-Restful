@@ -24,17 +24,7 @@ public class CategoriesController {
         return new ResponseEntity<>(categoriesService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Categories>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(categoriesService.findAll(pagina, qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-categories")
     public ResponseEntity<List<CategoriesVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -51,13 +41,13 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<Categories> save(@RequestBody Categories category) {
+    public ResponseEntity<CategoriesVO> save(@RequestBody CategoriesVO categoriesVO) {
         HttpHeaders headers = new HttpHeaders();
-        Categories categories = categoriesService.save(category);
-        if (null != categories)
-            return ResponseEntity.ok().body(categories);
+        CategoriesVO novaCategoryVO = categoriesService.saveVO(categoriesVO);
+        if (null != novaCategoryVO)
+            return ResponseEntity.ok().body(novaCategoryVO);
         else
-            return new ResponseEntity<>(categoriesService.save(categories), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(categoriesService.saveVO(novaCategoryVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
@@ -75,4 +65,14 @@ public class CategoriesController {
         }
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Categories>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(categoriesService.findAll(pagina, qtdRegistros), headers, HttpStatus.OK);
+//    }
 }

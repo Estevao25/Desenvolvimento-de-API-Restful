@@ -24,18 +24,7 @@ public class ReorderController {
         return new ResponseEntity<>(reorderService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Reorder>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(reorderService.findAll(pagina,
-                qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-reorder")
     public ResponseEntity<List<ReorderVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -52,13 +41,15 @@ public class ReorderController {
     }
 
     @PostMapping
-    public ResponseEntity<Reorder> save(@RequestBody Reorder reorder) {
+    public ResponseEntity<ReorderVO> save(@RequestBody ReorderVO reorderVO) {
         HttpHeaders headers = new HttpHeaders();
-        Reorder reorders = reorderService.save(reorder);
-        if (null != reorders)
-            return ResponseEntity.ok().body(reorders);
+
+        ReorderVO novaReorderVO = reorderService.saveVO(reorderVO);
+
+        if (null != novaReorderVO)
+            return ResponseEntity.ok().body(novaReorderVO);
         else
-            return new ResponseEntity<>(reorderService.save(reorders), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(reorderService.saveVO(novaReorderVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
@@ -76,4 +67,15 @@ public class ReorderController {
         }
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Reorder>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(reorderService.findAll(pagina,
+//                qtdRegistros), headers, HttpStatus.OK);
+//    }
 }

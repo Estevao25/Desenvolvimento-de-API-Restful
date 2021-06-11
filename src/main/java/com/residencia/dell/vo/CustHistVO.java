@@ -1,16 +1,16 @@
 package com.residencia.dell.vo;
 
 public class CustHistVO {
-    private CustomersVO customersVO;
+    private Integer customersid;
     private Integer orderId;
     private Integer prodId;
 
-    public CustomersVO getCustomersVO() {
-        return customersVO;
+    public Integer getCustomersid() {
+        return customersid;
     }
 
-    public void setCustomersVO(CustomersVO customersVO) {
-        this.customersVO = customersVO;
+    public void setCustomersid(Integer customersVO) {
+        this.customersid = customersid;
     }
 
     public Integer getOrderId() {

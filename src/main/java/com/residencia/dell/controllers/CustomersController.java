@@ -24,18 +24,7 @@ public class CustomersController {
         return new ResponseEntity<>(customersService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Customers>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(customersService.findAll(pagina,
-                qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-customers")
     public ResponseEntity<List<CustomersVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -52,13 +41,14 @@ public class CustomersController {
     }
 
     @PostMapping
-    public ResponseEntity<Customers> save(@RequestBody Customers customer) {
+    public ResponseEntity<CustomersVO> save(@RequestBody CustomersVO customersVO) {
         HttpHeaders headers = new HttpHeaders();
-        Customers customers = customersService.save(customer);
-        if (null != customers)
-            return ResponseEntity.ok().body(customers);
+
+        CustomersVO novoCostumersVO = customersService.saveVO(customersVO);
+        if (null != novoCostumersVO)
+            return ResponseEntity.ok().body(novoCostumersVO);
         else
-            return new ResponseEntity<>(customersService.save(customers), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(customersService.saveVO(novoCostumersVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
@@ -76,4 +66,15 @@ public class CustomersController {
         }
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping
+//    public ResponseEntity<List<Customers>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(customersService.findAll(pagina,
+//                qtdRegistros), headers, HttpStatus.OK);
+//    }
 }

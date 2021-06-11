@@ -2,36 +2,77 @@ package com.residencia.dell.entities;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
 public class Customers {
-    private Integer customerid;
-    private String firstname;
-    private String lastname;
-    private String address1;
-    private String address2;
-    private String city;
-    private String state;
-    private Integer zip;
-    private String country;
-    private Integer region;
-    private String email;
-    private String phone;
-    private String creditcardtype;
-    private String creditcard;
-    private String creditcardexpiration;
-    private String username;
-    private String password;
-    private Integer age;
-    private Integer income;
-    private Character gender;
-    private Collection<CustHist> custHistsByCustomerid;
-    private Collection<Orders> ordersByCustomerid;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customerid")
+    private Integer customerid;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "address1")
+    private String address1;
+
+    @Column(name = "address2")
+    private String address2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "zip")
+    private Integer zip;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "region")
+    private Integer region;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "creditcardtype")
+    private String creditcardtype;
+
+    @Column(name = "creditcard")
+    private String creditcard;
+
+    @Column(name = "creditcardexpiration")
+    private String creditcardexpiration;
+
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "income")
+    private Integer income;
+
+    @Column(name = "gender")
+    private Character gender;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Orders> ordersByCustomerid;
+
     public Integer getCustomerid() {
         return customerid;
     }
@@ -40,8 +81,6 @@ public class Customers {
         this.customerid = customerid;
     }
 
-
-    @Column(name = "firstname")
     public String getFirstname() {
         return firstname;
     }
@@ -50,8 +89,6 @@ public class Customers {
         this.firstname = firstname;
     }
 
-
-    @Column(name = "lastname")
     public String getLastname() {
         return lastname;
     }
@@ -60,8 +97,6 @@ public class Customers {
         this.lastname = lastname;
     }
 
-
-    @Column(name = "address1")
     public String getAddress1() {
         return address1;
     }
@@ -70,8 +105,6 @@ public class Customers {
         this.address1 = address1;
     }
 
-
-    @Column(name = "address2")
     public String getAddress2() {
         return address2;
     }
@@ -80,8 +113,6 @@ public class Customers {
         this.address2 = address2;
     }
 
-
-    @Column(name = "city")
     public String getCity() {
         return city;
     }
@@ -90,8 +121,6 @@ public class Customers {
         this.city = city;
     }
 
-
-    @Column(name = "state")
     public String getState() {
         return state;
     }
@@ -100,8 +129,6 @@ public class Customers {
         this.state = state;
     }
 
-
-    @Column(name = "zip")
     public Integer getZip() {
         return zip;
     }
@@ -110,8 +137,6 @@ public class Customers {
         this.zip = zip;
     }
 
-
-    @Column(name = "country")
     public String getCountry() {
         return country;
     }
@@ -120,8 +145,6 @@ public class Customers {
         this.country = country;
     }
 
-
-    @Column(name = "region")
     public Integer getRegion() {
         return region;
     }
@@ -130,8 +153,6 @@ public class Customers {
         this.region = region;
     }
 
-
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -140,8 +161,6 @@ public class Customers {
         this.email = email;
     }
 
-
-    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -150,8 +169,6 @@ public class Customers {
         this.phone = phone;
     }
 
-
-    @Column(name = "creditcardtype")
     public String getCreditcardtype() {
         return creditcardtype;
     }
@@ -160,8 +177,6 @@ public class Customers {
         this.creditcardtype = creditcardtype;
     }
 
-
-    @Column(name = "creditcard")
     public String getCreditcard() {
         return creditcard;
     }
@@ -170,8 +185,6 @@ public class Customers {
         this.creditcard = creditcard;
     }
 
-
-    @Column(name = "creditcardexpiration")
     public String getCreditcardexpiration() {
         return creditcardexpiration;
     }
@@ -180,8 +193,6 @@ public class Customers {
         this.creditcardexpiration = creditcardexpiration;
     }
 
-
-    @Column(name = "username", unique = true)
     public String getUsername() {
         return username;
     }
@@ -190,8 +201,6 @@ public class Customers {
         this.username = username;
     }
 
-
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -200,8 +209,6 @@ public class Customers {
         this.password = password;
     }
 
-
-    @Column(name = "age")
     public Integer getAge() {
         return age;
     }
@@ -210,8 +217,6 @@ public class Customers {
         this.age = age;
     }
 
-
-    @Column(name = "income")
     public Integer getIncome() {
         return income;
     }
@@ -220,8 +225,6 @@ public class Customers {
         this.income = income;
     }
 
-
-    @Column(name = "gender")
     public Character getGender() {
         return gender;
     }
@@ -230,12 +233,11 @@ public class Customers {
         this.gender = gender;
     }
 
-    @OneToMany(mappedBy = "customer")
-    public Collection<Orders> getOrdersByCustomerid() {
+    public List<Orders> getOrdersByCustomerid() {
         return ordersByCustomerid;
     }
 
-    public void setOrdersByCustomerid(Collection<Orders> ordersByCustomerid) {
+    public void setOrdersByCustomerid(List<Orders> ordersByCustomerid) {
         this.ordersByCustomerid = ordersByCustomerid;
     }
 }

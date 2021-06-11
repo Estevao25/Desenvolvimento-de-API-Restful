@@ -17,7 +17,7 @@ import java.util.List;
 public class OrdersController {
 
     @Autowired
-    OrdersService ordersService;
+    private OrdersService ordersService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Orders> findById(@PathVariable Integer id) {
@@ -25,7 +25,7 @@ public class OrdersController {
         return new ResponseEntity<>(ordersService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-orders")
     public ResponseEntity<List<OrdersVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)

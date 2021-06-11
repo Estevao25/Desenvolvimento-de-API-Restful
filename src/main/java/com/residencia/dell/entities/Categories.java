@@ -5,12 +5,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "categories")
 public class Categories {
-    private Integer category;
-    private String categoryname;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category")
+    private Integer category;
+
+    @Column(name = "categoryname")
+    private String categoryname;
+
     public Integer getCategory() {
         return category;
     }
@@ -19,7 +22,6 @@ public class Categories {
         this.category = category;
     }
 
-    @Column(name = "categoryname")
     public String getCategoryname() {
         return categoryname;
     }

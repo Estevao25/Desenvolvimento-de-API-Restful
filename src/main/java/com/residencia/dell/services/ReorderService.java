@@ -1,11 +1,7 @@
 package com.residencia.dell.services;
 
-import com.residencia.dell.entities.Orderlines;
-import com.residencia.dell.entities.Orders;
 import com.residencia.dell.entities.Reorder;
 import com.residencia.dell.repositories.ReorderRepository;
-import com.residencia.dell.vo.OrderlinesVO;
-import com.residencia.dell.vo.OrdersVO;
 import com.residencia.dell.vo.ReorderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,33 +22,8 @@ public class ReorderService {
         return reorderRepository.findById(id).get();
     }
 
-    public List<Reorder> findAll(){
-        return reorderRepository.findAll();
-    }
-
-    public List<Reorder> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
-        Pageable page = null;
-        List<Reorder> listReorder = null;
-        List<Reorder> listReorderComPaginacao = null;
-
-        try {
-            if (null != pagina && null != qtdRegistros) {
-                page = PageRequest.of(pagina, qtdRegistros);
-                listReorderComPaginacao = reorderRepository.findAll(page).getContent();
-
-                return listReorderComPaginacao;
-            } else {
-                listReorder = reorderRepository.findAll();
-
-                return listReorder;
-            }
-        } catch (Exception e) {
-            throw new Exception("Não foi possível recuperar a lista de reorder ::" + e.getMessage());
-        }
-    }
-
     public List<ReorderVO> findAllVO(Integer pagina, Integer qtdRegistros) throws Exception {
-        PageRequest page = null;
+        Pageable page = null;
         List<Reorder> listReorder = null;
         List<Reorder> listReorderComPaginacao = null;
         List<ReorderVO> listReorderVO = new ArrayList<>();
@@ -82,33 +53,14 @@ public class ReorderService {
         return listReorderVO;
     }
 
-    private ReorderVO convertEntidadeParaVO(Reorder reorder) {
-        ReorderVO reorderVO = new ReorderVO();
-
-        reorderVO.setProdId(reorder.getProdId());
-        reorderVO.setDateLow(reorder.getDateLow());
-        reorderVO.setQuanLow(reorder.getQuanLow());
-        reorderVO.setDateReordered(reorder.getDateReordered());
-        reorderVO.setQuanReordered(reorder.getQuanReordered());
-        reorderVO.setDateExpected(reorder.getDateExpected());
-
-        return reorderVO;
-    }
-
     public long count(){
         return reorderRepository.count();
     }
 
-    public Reorder save(Reorder reorder){
-        if(reorderRepository.save(reorder).getProdId() != null){
-            return reorderRepository.save(reorder);
-        } else{
-            return null;
-        }
-    }
-
-    public Reorder update(Reorder reorder){
-        return reorderRepository.save(reorder);
+    public ReorderVO saveVO(ReorderVO reorderVO){
+        Reorder novaReorder = convertVOParaEntidade(reorderVO);
+        reorderRepository.save(novaReorder);
+        return convertEntidadeParaVO(novaReorder);
     }
 
     public Reorder update(Integer id, Reorder reorder) {
@@ -133,4 +85,58 @@ public class ReorderService {
             return false;
         }
     }
+
+    private ReorderVO convertEntidadeParaVO(Reorder reorder) {
+        ReorderVO reorderVO = new ReorderVO();
+
+        reorderVO.setProdId(reorder.getProdId());
+        reorderVO.setDateLow(reorder.getDateLow());
+        reorderVO.setQuanLow(reorder.getQuanLow());
+        reorderVO.setDateReordered(reorder.getDateReordered());
+        reorderVO.setQuanReordered(reorder.getQuanReordered());
+        reorderVO.setDateExpected(reorder.getDateExpected());
+
+        return reorderVO;
+    }
+
+    private Reorder convertVOParaEntidade(ReorderVO reorderVO) {
+        Reorder reorder = new Reorder();
+
+        reorder.setProdId(reorderVO.getProdId());
+        reorder.setDateLow(reorderVO.getDateLow());
+        reorder.setQuanLow(reorderVO.getQuanLow());
+        reorder.setDateReordered(reorderVO.getDateReordered());
+        reorder.setQuanReordered(reorderVO.getQuanReordered());
+        reorder.setDateExpected(reorderVO.getDateExpected());
+
+        return reorder;
+    }
+
+//    public List<Reorder> findAll(){
+//        return reorderRepository.findAll();
+//    }
+//
+//    public List<Reorder> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
+//        Pageable page = null;
+//        List<Reorder> listReorder = null;
+//        List<Reorder> listReorderComPaginacao = null;
+//
+//        try {
+//            if (null != pagina && null != qtdRegistros) {
+//                page = PageRequest.of(pagina, qtdRegistros);
+//                listReorderComPaginacao = reorderRepository.findAll(page).getContent();
+//
+//                return listReorderComPaginacao;
+//            } else {
+//                listReorder = reorderRepository.findAll();
+//
+//                return listReorder;
+//            }
+//        } catch (Exception e) {
+//            throw new Exception("Não foi possível recuperar a lista de reorder ::" + e.getMessage());
+//        }
+//    }
+//    public Reorder update(Reorder reorder){
+//        return reorderRepository.save(reorder);
+//    }
 }

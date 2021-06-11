@@ -68,6 +68,42 @@ public class OrdersService {
         return listOrdersVO;
     }
 
+    public long count() {
+        return ordersRepository.count();
+    }
+
+    public OrdersVO saveVO(OrdersVO ordersVO) {
+        Orders novaOrder = converteVOParaEntidade(ordersVO);
+        Orders order = ordersRepository.save(novaOrder);
+
+        List<Orderlines> listOrderline = order.getListOrderLines();
+        for (int i = 0; i < listOrderline.size(); i++) {
+            listOrderline.get(i).setOrderLineId(i + 100);
+            orderlinesRepository.save(listOrderline.get(i));
+        }
+        return convertEntidadeParaVO(novaOrder);
+    }
+
+    public Orders update(Integer id, Orders orders) {
+        Orders newOrders = ordersRepository.findById(id).get();
+        updateDados(newOrders, orders);
+        return ordersRepository.save(newOrders);
+    }
+
+    private void updateDados(Orders newOrders, Orders orders) {
+        newOrders.setOrderDate(orders.getOrderDate());
+        newOrders.setCustomer(orders.getCustomer());
+        newOrders.setNetAmount(orders.getNetAmount());
+        newOrders.setTax(orders.getTax());
+        newOrders.setTotalAmount(orders.getTotalAmount());
+    }
+
+    public void delete(Integer id) {
+        if (id != null) {
+            ordersRepository.deleteById(id);
+        }
+    }
+
     private OrdersVO convertEntidadeParaVO(Orders orders) {
         OrdersVO ordersVO = new OrdersVO();
         List<OrderlinesVO> listOrderlinesVO = new ArrayList<>();
@@ -118,42 +154,6 @@ public class OrdersService {
             orders.setListOrderLines(listOrderlines);
         }
         return orders;
-    }
-
-    public long count() {
-        return ordersRepository.count();
-    }
-
-    public OrdersVO saveVO(OrdersVO ordersVO) {
-        Orders novaOrder = converteVOParaEntidade(ordersVO);
-        Orders order = ordersRepository.save(novaOrder);
-
-        List<Orderlines> listOrderline = order.getListOrderLines();
-        for (int i = 0; i < listOrderline.size(); i++) {
-            listOrderline.get(i).setOrderLineId(i + 100);
-            orderlinesRepository.save(listOrderline.get(i));
-        }
-        return convertEntidadeParaVO(novaOrder);
-    }
-
-    public Orders update(Integer id, Orders orders) {
-        Orders newOrders = ordersRepository.findById(id).get();
-        updateDados(newOrders, orders);
-        return ordersRepository.save(newOrders);
-    }
-
-    public void delete(Integer id) {
-        if (id != null) {
-            ordersRepository.deleteById(id);
-        }
-    }
-
-    private void updateDados(Orders newOrders, Orders orders) {
-        newOrders.setOrderDate(orders.getOrderDate());
-        newOrders.setCustomer(orders.getCustomer());
-        newOrders.setNetAmount(orders.getNetAmount());
-        newOrders.setTax(orders.getTax());
-        newOrders.setTotalAmount(orders.getTotalAmount());
     }
 
     public NotaFiscalVO emitirNF(Integer orderId) {

@@ -5,12 +5,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cust_hist")
 public class CustHist {
-    private Integer orderid;
-    private Integer prodId;
 
     @Id
     @Column(name = "customerid")
     private Integer customerid;
+
+    @Column(name = "orderid")
+    private Integer orderid;
+
+    @Column(name = "prod_id")
+    private Integer prodId;
+
     public Integer getCustomerid() {
         return customerid;
     }
@@ -19,7 +24,6 @@ public class CustHist {
         this.customerid = customerid;
     }
 
-    @Column(name = "orderid")
     public Integer getOrderid() {
         return orderid;
     }
@@ -28,7 +32,6 @@ public class CustHist {
         this.orderid = orderid;
     }
 
-    @Column(name = "prod_id")
     public Integer getProdId() {
         return prodId;
     }

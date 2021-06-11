@@ -1,6 +1,7 @@
 package com.residencia.dell.controllers;
-/*
+
 import com.residencia.dell.entities.CustHist;
+import com.residencia.dell.exceptions.CustHistException;
 import com.residencia.dell.services.CustHistService;
 import com.residencia.dell.vo.CustHistVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,7 @@ public class CustHistController {
         return new ResponseEntity<>(custHistService.findById(id), headers, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CustHist>> findAll(
-            @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer qtdRegistros)
-            throws Exception {
-
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(custHistService.findAll(pagina, qtdRegistros), headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/listar-todos")
+    @GetMapping("/listar-custhist")
     public ResponseEntity<List<CustHistVO>> findAllVO(
             @RequestParam(required = false) Integer pagina,
             @RequestParam(required = false) Integer qtdRegistros)
@@ -50,19 +41,22 @@ public class CustHistController {
     }
 
     @PostMapping
-    public ResponseEntity<CustHist> save(@RequestBody CustHist custHist) {
+    public ResponseEntity<CustHistVO> save(@RequestBody CustHistVO custHistVO) {
+
         HttpHeaders headers = new HttpHeaders();
-        CustHist custHists = custHistService.save(custHist);
-        if (null != custHist)
-            return ResponseEntity.ok().body(custHist);
+
+        CustHistVO novaCustHistVO = custHistService.saveVO(custHistVO);
+
+        if (null != novaCustHistVO)
+            return ResponseEntity.ok().body(novaCustHistVO);
         else
-            return new ResponseEntity<>(custHistService.save(custHists), headers, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(custHistService.saveVO(novaCustHistVO), headers, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustHist> update(@PathVariable Integer id, @RequestBody CustHist custHist) {
+    public ResponseEntity<CustHist> update(@PathVariable Integer id, @RequestBody CustHist custHist) throws CustHistException {
         HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>(custHistService.update(custHist, id), headers, HttpStatus.OK);
+        return new ResponseEntity<>(custHistService.update(id, custHist), headers, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -74,4 +68,14 @@ public class CustHistController {
         }
         return ResponseEntity.ok().build();
     }
-}*/
+
+//    @GetMapping
+//    public ResponseEntity<List<CustHist>> findAll(
+//            @RequestParam(required = false) Integer pagina,
+//            @RequestParam(required = false) Integer qtdRegistros)
+//            throws Exception {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        return new ResponseEntity<>(custHistService.findAll(pagina, qtdRegistros), headers, HttpStatus.OK);
+//    }
+}

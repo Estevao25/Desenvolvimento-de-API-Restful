@@ -27,33 +27,8 @@ public class OrderlinesService {
         return orderlinesRepository.findByOrderLineIdAndOrders(orderlinesId, orders);
     }
 
-    public List<Orderlines> findAll() {
-        return orderlinesRepository.findAll();
-    }
-
-    public List<Orderlines> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
-        Pageable page = null;
-        List<Orderlines> listOrderlines = null;
-        List<Orderlines> listOrderlinesComPaginacao = null;
-
-        try {
-            if (null != pagina && null != qtdRegistros) {
-                page = PageRequest.of(pagina, qtdRegistros);
-                listOrderlinesComPaginacao = orderlinesRepository.findAll(page).getContent();
-
-                return listOrderlinesComPaginacao;
-            } else {
-                listOrderlines = orderlinesRepository.findAll();
-
-                return listOrderlines;
-            }
-        } catch (Exception e) {
-            throw new Exception("Não foi possível recuperar a lista de orderlines ::" + e.getMessage());
-        }
-    }
-
     public List<OrderlinesVO> findAllVO(Integer pagina, Integer qtdRegistros) throws Exception {
-        PageRequest page = null;
+        Pageable page = null;
         List<Orderlines> listOrderlines = null;
         List<Orderlines> listOrderlinesComPaginacao = null;
         List<OrderlinesVO> listOrderlinesVO = new ArrayList<>();
@@ -83,32 +58,14 @@ public class OrderlinesService {
         return listOrderlinesVO;
     }
 
-    private OrderlinesVO convertEntidadeParaVO(Orderlines orderlines) {
-        OrderlinesVO orderlinesVO = new OrderlinesVO();
-
-        orderlinesVO.setOrderlineid(orderlines.getOrderLineId());
-        orderlinesVO.setProdId(orderlines.getProdId());
-        orderlinesVO.setQuantity(orderlines.getQuantity());
-        orderlinesVO.setOrderDate(orderlines.getOrderDate());
-
-        return orderlinesVO;
-    }
-
     public long count(){
         return orderlinesRepository.count();
     }
 
-    public Orderlines save(Orderlines orderlines){
-        /*precisa implementar pra pegar o ordersid tbm*/
-        if (orderlinesRepository.save(orderlines).getOrderLineId() != null) {
-            return orderlinesRepository.save(orderlines);
-        } else{
-            return null;
-        }
-    }
-
-    public Orderlines update(Orderlines orderlines){
-        return orderlinesRepository.save(orderlines);
+    public OrderlinesVO saveVO(OrderlinesVO orderlinesVO){
+        Orderlines novaOrderline = convertVOParaEntidade(orderlinesVO);
+        orderlinesRepository.save(novaOrderline);
+        return convertEntidadeParaVO(novaOrderline);
     }
 
     public Orderlines update(Integer orderlineId, Integer orderId, Orderlines orderlines) {
@@ -136,19 +93,65 @@ public class OrderlinesService {
         }
     }
 
+    private OrderlinesVO convertEntidadeParaVO(Orderlines orderlines) {
+        OrderlinesVO orderlinesVO = new OrderlinesVO();
 
-        /*public long count() {
-            return orderlinesRepository.count();
-        }
-        public Orderlines save(Orderlines orderlines, Integer orderlinesId, Integer ordersByOrderid) {
-        Orders orders = ordersRepository.findById(ordersByOrderid).get();
-        Orderlines newOrderlines = orderlinesRepository.save(orderlines);
-        if (newOrderlines.getOrderLineId() != null) {
-            return newOrderlines;
-        } else {
-            return null;
-        }
+        orderlinesVO.setOrderlineid(orderlines.getOrderLineId());
+        orderlinesVO.setProdId(orderlines.getProdId());
+        orderlinesVO.setQuantity(orderlines.getQuantity());
+        orderlinesVO.setOrderDate(orderlines.getOrderDate());
+
+        return orderlinesVO;
     }
+
+    private Orderlines convertVOParaEntidade(OrderlinesVO orderlinesVO) {
+        Orderlines orderlines = new Orderlines();
+
+        orderlines.setOrderLineId(orderlinesVO.getOrderlineid());
+        orderlines.setProdId(orderlinesVO.getProdId());
+        orderlines.setQuantity(orderlinesVO.getQuantity());
+        orderlines.setOrderDate(orderlinesVO.getOrderDate());
+
+        return orderlines;
+    }
+
+//    public List<Orderlines> findAll() {
+//        return orderlinesRepository.findAll();
+//    }
+//
+//    public List<Orderlines> findAll(Integer pagina, Integer qtdRegistros) throws Exception {
+//        Pageable page = null;
+//        List<Orderlines> listOrderlines = null;
+//        List<Orderlines> listOrderlinesComPaginacao = null;
+//
+//        try {
+//            if (null != pagina && null != qtdRegistros) {
+//                page = PageRequest.of(pagina, qtdRegistros);
+//                listOrderlinesComPaginacao = orderlinesRepository.findAll(page).getContent();
+//
+//                return listOrderlinesComPaginacao;
+//            } else {
+//                listOrderlines = orderlinesRepository.findAll();
+//
+//                return listOrderlines;
+//            }
+//        } catch (Exception e) {
+//            throw new Exception("Não foi possível recuperar a lista de orderlines ::" + e.getMessage());
+//        }
+//    }
+
+    /*public long count() {
+    return orderlinesRepository.count();
+    }
+    public Orderlines save(Orderlines orderlines, Integer orderlinesId, Integer ordersByOrderid) {
+    Orders orders = ordersRepository.findById(ordersByOrderid).get();
+    Orderlines newOrderlines = orderlinesRepository.save(orderlines);
+    if (newOrderlines.getOrderLineId() != null) {
+        return newOrderlines;
+    } else {
+        return null;
+    }
+   }
 
     public Orderlines update(Orderlines orderlines) {
         return orderlinesRepository.save(orderlines);
